@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: sans-serif;
+  background: #f5f6f8;
+  color: #1f2328;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+h1 {
+  margin-bottom: 16px;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.panel + .panel {
+  margin-top: 12px;
+}
+
+#loading,
+#empty-message {
+  margin: 10px 0 0;
+}
+
+.character-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.character-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.total-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.total-list li + li {
+  margin-top: 6px;
+}
