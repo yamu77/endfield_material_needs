@@ -1,5 +1,7 @@
 {
     "money":"折金券",
+    "contract_prism":"協約角柱",
+    "contract_prism_set":"協約角柱セット",
     "contract_disc":"協約ディスク",
     "contract_disc_set":"協約ディスクセット",
     "rose_mushroom_t1":"薄紅茸",
@@ -7,13 +9,14 @@
     "rose_mushroom_t3":"深紅茸",
     "bloodtide_mushroom":"血潮茸",
     "ultra_range_spectro_tube":"超距離分光管",
-    "contract_prism":"協約角柱",
-    "contract_prism_set":"協約角柱セット",
     "crystal_sharp_leaf":"結晶鋭葉",
     "pure_crystal_sharp_leaf":"純晶鋭葉",
     "supreme_crystal_sharp_leaf":"至晶鋭葉",
     "trace_of_continuance":"存続の痕跡",
     "quadrant_adaptive_fluid":"象限適合液",
     "triphase_nanoflake":"三相ナノフレーク",
-    "erosion_jade_leaf":"侵蝕玉化葉"
+    "erosion_jade_leaf":"侵蝕玉化葉",
+    "stargate_mushroom":"星門茸",
+    "d96_steel_sample_iv":"D96鋼試料Ⅳ",
+    "tachyon_selected_lattice":"タキオン精選格子"
 }

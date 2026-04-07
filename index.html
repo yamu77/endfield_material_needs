@@ -3,12 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>character素材集計</title>
+    <title>エンドフィールド必要素材数</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async="async"
+    src="https://www.googletagmanager.com/gtag/js?id=G-3PY1WYHFK3"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-3PY1WYHFK3");
+  </script>
+
   <body>
     <main class="container">
-      <h1>character素材集計</h1>
+      <h1>エンドフィールド必要素材数</h1>
 
       <section class="panel">
         <h2>キャラクター選択</h2>
@@ -17,9 +33,15 @@
       </section>
 
       <section class="panel">
+        <h2>詳細選択</h2>
+        <p id="details-empty-message">キャラクターを選択して。</p>
+        <div id="details-list" class="details-list"></div>
+      </section>
+
+      <section class="panel">
         <h2>素材合計</h2>
         <p id="empty-message">キャラクターを選択して。</p>
-        <ul id="total-list" class="total-list"></ul>
+        <div id="total-list" class="total-list"></div>
       </section>
     </main>
     <script src="./script.js"></script>
