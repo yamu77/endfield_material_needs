@@ -134,6 +134,10 @@ h1 {
   gap: 10px;
 }
 
+.total-list-sp {
+  display: none;
+}
+
 .materials-table {
   width: 100%;
   border-collapse: collapse;
@@ -178,4 +182,14 @@ h1 {
 .materials-table .image-cell.is-zero .material-image {
   opacity: 0.45;
   filter: grayscale(100%);
+}
+
+@media (max-width: 640px) {
+  .total-list-pc {
+    display: none;
+  }
+
+  .total-list-sp {
+    display: grid;
+  }
 }
