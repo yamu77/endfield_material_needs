@@ -239,29 +239,37 @@ class EndfieldScraper:
 
     def get_equipment(self) -> List[Dict[str, int]]:
         soup = self._fetch_soup()
-        rows = soup.select("#content_1_15+.ie5 td:nth-child(2)")
         jp_to_key = self._get_jp_to_key_map()
         equipment: List[Dict[str, int]] = []
-        for row in rows:
-            text = row.get_text(" ", strip=True).replace(",", "")
-            matches = re.findall(r"x(\d+)", text)
-            if not matches:
-                continue
-            key_positions: List[Tuple[int, str]] = []
-            for jp_name, key_name in jp_to_key.items():
-                pos = text.find(jp_name)
-                if pos >= 0:
-                    key_positions.append((pos, key_name))
-            key_positions.sort(key=lambda x: x[0])
-            keys = [key for _, key in key_positions]
-            entry: Dict[str, int] = {}
-            for idx, key in enumerate(keys):
-                if idx >= len(matches):
-                    entry[key] = 0
+        for offset in range(12, 16):
+            rows = soup.select(f"#content_1_{offset}+.ie5 td:nth-child(2)")
+            current_equipment: List[Dict[str, int]] = []
+            for row in rows:
+                text = row.get_text(" ", strip=True).replace(",", "")
+                matches = re.findall(r"x(\d+)", text)
+                if not matches:
                     continue
-                entry[key] = int(matches[idx])
-            if entry:
-                equipment.append(entry)
+                key_positions: List[Tuple[int, str]] = []
+                for jp_name, key_name in jp_to_key.items():
+                    pos = text.find(jp_name)
+                    if pos >= 0:
+                        key_positions.append((pos, key_name))
+                key_positions.sort(key=lambda x: x[0])
+                keys = [key for _, key in key_positions]
+                entry: Dict[str, int] = {}
+                for idx, key in enumerate(keys):
+                    if idx >= len(matches):
+                        entry[key] = 0
+                        continue
+                    entry[key] = int(matches[idx])
+                if entry:
+                    current_equipment.append(entry)
+            has_zero = any(
+                any(value == 0 for value in row.values()) for row in current_equipment
+            )
+            equipment = current_equipment
+            if not has_zero and len(current_equipment) > 0:
+                break
         return equipment
 
     def get_file_name(self) -> str:
