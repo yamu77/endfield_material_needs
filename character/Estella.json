@@ -110,21 +110,21 @@
       "trace_of_continuance": 1,
       "contract_prism_set": 15,
       "d96_steel_sample_iv": 6,
-      "岩アンゲロス葉": 3,
+      "rock_angelos_leaf": 3,
       "money": 24000
     },
     {
       "trace_of_continuance": 2,
       "contract_prism_set": 24,
       "d96_steel_sample_iv": 16,
-      "岩アンゲロス葉": 6,
+      "rock_angelos_leaf": 6,
       "money": 30000
     },
     {
       "trace_of_continuance": 3,
       "contract_prism_set": 50,
       "d96_steel_sample_iv": 36,
-      "岩アンゲロス葉": 12,
+      "rock_angelos_leaf": 12,
       "money": 65000
     }
   ],
@@ -133,21 +133,21 @@
       "trace_of_continuance": 1,
       "contract_prism_set": 15,
       "tachyon_selected_lattice": 6,
-      "岩アンゲロス葉": 3,
+      "rock_angelos_leaf": 3,
       "money": 24000
     },
     {
       "trace_of_continuance": 2,
       "contract_prism_set": 24,
       "tachyon_selected_lattice": 16,
-      "岩アンゲロス葉": 6,
+      "rock_angelos_leaf": 6,
       "money": 30000
     },
     {
       "trace_of_continuance": 3,
       "contract_prism_set": 50,
       "tachyon_selected_lattice": 36,
-      "岩アンゲロス葉": 12,
+      "rock_angelos_leaf": 12,
       "money": 65000
     }
   ],
