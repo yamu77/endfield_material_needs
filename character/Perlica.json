@@ -48,14 +48,18 @@
         "contract_prism": 12
       },
       {
-        "money": 10800,
-        "contract_prism": 48
+        "money": 8600,
+        "contract_prism": 40
       }
     ],
     [
       {
-        "money": 32000,
-        "contract_prism": 36
+        "money": 10000,
+        "contract_prism": 48
+      },
+      {
+        "money": 24000,
+        "contract_prism": 28
       }
     ]
   ],
@@ -149,19 +153,19 @@
   ],
   "abilities": [
     {
-      "money": 1600,
-      "contract_prism": 6
+      "money": 1000,
+      "contract_prism": 5
     },
     {
-      "money": 8000,
-      "contract_prism": 12
+      "money": 1800,
+      "contract_prism": 10
     },
     {
-      "money": 3000,
-      "contract_prism_set": 12
+      "money": 6000,
+      "contract_prism_set": 10
     },
     {
-      "money": 20000,
+      "money": 12000,
       "contract_prism_set": 20
     }
   ],

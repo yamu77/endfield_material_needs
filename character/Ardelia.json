@@ -44,14 +44,22 @@
   "qualities": [
     [
       {
-        "money": 7200,
-        "contract_prism": 36
+        "money": 2400,
+        "contract_prism": 12
+      },
+      {
+        "money": 8600,
+        "contract_prism": 40
       }
     ],
     [
       {
-        "money": 26000,
-        "contract_prism": 85
+        "money": 10000,
+        "contract_prism": 48
+      },
+      {
+        "money": 24000,
+        "contract_prism": 28
       }
     ]
   ],

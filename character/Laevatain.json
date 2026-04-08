@@ -20,7 +20,7 @@
       "money": 100000,
       "contract_disc_set": 36,
       "bloodtide_mushroom": 8,
-      "ultra_range_spectro_tube": 96
+      "ultra_range_spectro_tube": 20
     }
   ],
   "assignments": [
@@ -46,12 +46,20 @@
       {
         "money": 2400,
         "contract_prism": 12
+      },
+      {
+        "money": 8600,
+        "contract_prism": 40
       }
     ],
     [
       {
-        "money": 16000,
-        "contract_prism": 18
+        "money": 10000,
+        "contract_prism": 48
+      },
+      {
+        "money": 24000,
+        "contract_prism": 28
       }
     ]
   ],

@@ -25,20 +25,20 @@
   ],
   "assignments": [
     {
-      "money": 0,
-      "contract_prism": 0
+      "money": 1600,
+      "contract_prism": 6
     },
     {
-      "money": 0,
-      "contract_prism_set": 0
+      "money": 8000,
+      "contract_prism_set": 12
     },
     {
-      "money": 0,
-      "contract_prism": 0
+      "money": 3000,
+      "contract_prism": 12
     },
     {
-      "money": 0,
-      "contract_prism_set": 0
+      "money": 20000,
+      "contract_prism_set": 20
     }
   ],
   "qualities": [
@@ -153,16 +153,20 @@
   ],
   "abilities": [
     {
-      "money": 0,
-      "contract_prism": 0
+      "money": 1000,
+      "contract_prism": 5
     },
     {
-      "money": 0,
-      "contract_prism": 0
+      "money": 1800,
+      "contract_prism": 10
     },
     {
-      "money": 0,
-      "contract_prism_set": 0
+      "money": 6000,
+      "contract_prism_set": 10
+    },
+    {
+      "money": 12000,
+      "contract_prism_set": 20
     }
   ],
   "equipment": [
