@@ -1,0 +1,79 @@
+{
+  "name": "スノーシャイン",
+  "promotion": [
+    {
+      "money": 1600,
+      "contract_disc": 8,
+      "rose_mushroom_t1": 3
+    },
+    {
+      "money": 6500,
+      "contract_disc": 25,
+      "rose_mushroom_t2": 5
+    },
+    {
+      "money": 18000,
+      "contract_disc_set": 24,
+      "rose_mushroom_t3": 5
+    },
+    {
+      "money": 100000,
+      "contract_disc_set": 36,
+      "bloodtide_mushroom": 8,
+      "ultra_range_spectro_tube": 20
+    }
+  ],
+  "assignments": [
+    {
+      "money": 0,
+      "contract_prism": 0
+    },
+    {
+      "money": 0,
+      "contract_prism_set": 0
+    },
+    {
+      "money": 0,
+      "contract_prism": 0
+    },
+    {
+      "money": 0,
+      "contract_prism_set": 0
+    }
+  ],
+  "qualities": [
+    [
+      {
+        "money": 0,
+        "contract_prism": 0
+      },
+      {
+        "money": 0,
+        "contract_prism": 0
+      }
+    ],
+    []
+  ],
+  "skills": [],
+  "specializations1": [],
+  "specializations2": [],
+  "abilities": [
+    {
+      "money": 1600,
+      "contract_prism": 6
+    },
+    {
+      "money": 8000,
+      "contract_prism": 12
+    },
+    {
+      "money": 3000,
+      "contract_prism_set": 12
+    },
+    {
+      "money": 20000,
+      "contract_prism_set": 20
+    }
+  ],
+  "equipment": []
+}

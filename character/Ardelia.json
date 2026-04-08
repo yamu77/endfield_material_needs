@@ -1,0 +1,179 @@
+{
+  "name": "アルデリア",
+  "promotion": [
+    {
+      "money": 1600,
+      "contract_disc": 8,
+      "rose_mushroom_t1": 3
+    },
+    {
+      "money": 6500,
+      "contract_disc": 25,
+      "rose_mushroom_t2": 5
+    },
+    {
+      "money": 18000,
+      "contract_disc_set": 24,
+      "rose_mushroom_t3": 5
+    },
+    {
+      "money": 100000,
+      "contract_disc_set": 36,
+      "bloodtide_mushroom": 8,
+      "ultra_range_spectro_tube": 20
+    }
+  ],
+  "assignments": [
+    {
+      "money": 1600,
+      "contract_prism": 6
+    },
+    {
+      "money": 8000,
+      "contract_prism_set": 12
+    },
+    {
+      "money": 3000,
+      "contract_prism": 12
+    },
+    {
+      "money": 20000,
+      "contract_prism_set": 20
+    }
+  ],
+  "qualities": [
+    [
+      {
+        "money": 0,
+        "contract_prism": 0
+      },
+      {
+        "money": 7200,
+        "contract_prism": 36
+      }
+    ],
+    [
+      {
+        "money": 26000,
+        "contract_prism": 85
+      }
+    ]
+  ],
+  "skills": [
+    {
+      "money": 1000,
+      "contract_prism": 6,
+      "crystal_sharp_leaf": 1
+    },
+    {
+      "money": 2700,
+      "contract_prism": 12,
+      "crystal_sharp_leaf": 2
+    },
+    {
+      "money": 3200,
+      "contract_prism": 16,
+      "pure_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 4200,
+      "contract_prism": 21,
+      "pure_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 5400,
+      "contract_prism": 27,
+      "pure_crystal_sharp_leaf": 2
+    },
+    {
+      "money": 8200,
+      "contract_prism_set": 6,
+      "supreme_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 10500,
+      "contract_prism_set": 8,
+      "supreme_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 18000,
+      "contract_prism_set": 16,
+      "supreme_crystal_sharp_leaf": 2
+    }
+  ],
+  "specializations1": [
+    {
+      "trace_of_continuance": 1,
+      "contract_prism_set": 15,
+      "d96_steel_sample_iv": 6,
+      "岩アンゲロス葉": 3,
+      "money": 24000
+    },
+    {
+      "trace_of_continuance": 2,
+      "contract_prism_set": 24,
+      "d96_steel_sample_iv": 16,
+      "岩アンゲロス葉": 6,
+      "money": 30000
+    },
+    {
+      "trace_of_continuance": 3,
+      "contract_prism_set": 50,
+      "d96_steel_sample_iv": 36,
+      "岩アンゲロス葉": 12,
+      "money": 65000
+    }
+  ],
+  "specializations2": [
+    {
+      "trace_of_continuance": 1,
+      "contract_prism_set": 15,
+      "tachyon_selected_lattice": 6,
+      "岩アンゲロス葉": 3,
+      "money": 24000
+    },
+    {
+      "trace_of_continuance": 2,
+      "contract_prism_set": 24,
+      "tachyon_selected_lattice": 16,
+      "岩アンゲロス葉": 6,
+      "money": 30000
+    },
+    {
+      "trace_of_continuance": 3,
+      "contract_prism_set": 50,
+      "tachyon_selected_lattice": 36,
+      "岩アンゲロス葉": 12,
+      "money": 65000
+    }
+  ],
+  "abilities": [
+    {
+      "money": 1000,
+      "contract_prism": 5
+    },
+    {
+      "money": 1800,
+      "contract_prism": 10
+    },
+    {
+      "money": 6000,
+      "contract_prism_set": 10
+    },
+    {
+      "money": 12000,
+      "contract_prism_set": 20
+    }
+  ],
+  "equipment": [
+    {
+      "money": 1600
+    },
+    {
+      "money": 6500
+    },
+    {
+      "money": 18000
+    }
+  ]
+}

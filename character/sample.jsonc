@@ -1,0 +1,186 @@
+{
+  // サンプル　値は適当
+  "name": "キャラ名", // 名前
+  "promotion": [
+    // 昇進
+    {
+      "money": 999, // 昇進コスト（通貨）
+      "promotion_item1": 8, // 昇進素材1
+      "promotion_item2": 3, // 昇進素材2
+    },
+    {
+      "money": 4999,
+      "promotion_item1": 20,
+      "promotion_item3": 5,
+    },
+    {
+      "money": 12000,
+      "promotion_item4": 18,
+      "promotion_item5": 9,
+    },
+    {
+      "money": 99999,
+      "promotion_item4": 30,
+      "promotion_item6": 5,
+      "promotion_item7": 7,
+    },
+  ],
+  "assignments": [
+    // 配属スキル
+    {
+      "money": 1000,
+      "assignment_item1": 6,
+    },
+    {
+      "money": 8000,
+      "assignment_item2": 12,
+    },
+    {
+      "money": 3000,
+      "assignment_item1": 10,
+    },
+    {
+      "money": 20000,
+      "assignment_item2": 15,
+    },
+  ],
+  "qualities": [
+    // 素質
+    [
+      {
+        "money": 2000,
+        "quality_item1": 12,
+      },
+      {
+        "money": 8000,
+        "quality_item1": 20,
+      },
+    ],
+    [
+      {
+        "money": 11000,
+        "quality_item1": 24,
+      },
+      {
+        "money": 23000,
+        "quality_item2": 14,
+      },
+    ],
+  ],
+  "skills": [
+    // スキル1~9
+    {
+      "money": 500,
+      "skill_item1": 2,
+      "character_mat1": 1,
+    },
+    {
+      "money": 2500,
+      "skill_item1": 6,
+      "character_mat1": 2,
+    },
+    {
+      "money": 3000,
+      "skill_item1": 10,
+      "character_mat2": 1,
+    },
+    {
+      "money": 4000,
+      "skill_item1": 15,
+      "character_mat2": 1,
+    },
+    {
+      "money": 6000,
+      "skill_item2": 1,
+      "character_mat2": 2,
+    },
+    {
+      "money": 9000,
+      "skill_item2": 3,
+      "character_mat3": 1,
+    },
+    {
+      "money": 12000,
+      "skill_item2": 5,
+      "character_mat3": 1,
+    },
+    {
+      "money": 18000,
+      "skill_item3": 2,
+      "character_mat3": 2,
+    },
+  ],
+  "specializations1": [
+    // 特化（通常・連携）
+    {
+      "money": 20000,
+      "special_item1": 1,
+      "spec_mat1": 6,
+      "spec_mat2": 3,
+    },
+    {
+      "money": 30000,
+      "special_item1": 2,
+      "spec_mat1": 12,
+      "spec_mat2": 6,
+    },
+    {
+      "money": 60000,
+      "special_item1": 3,
+      "spec_mat1": 24,
+      "spec_mat2": 12,
+    },
+  ],
+  "specializations2": [
+    // 特化（戦技・必殺）
+    {
+      "money": 22000,
+      "special_item1": 1,
+      "spec_mat3": 6,
+      "spec_mat2": 3,
+    },
+    {
+      "money": 33000,
+      "special_item1": 2,
+      "spec_mat3": 15,
+      "spec_mat2": 6,
+    },
+    {
+      "money": 65000,
+      "special_item1": 3,
+      "spec_mat3": 36,
+      "spec_mat2": 12,
+    },
+  ],
+  "abilities": [
+    // 能力値強化
+    {
+      "money": 1000,
+      "ability_item1": 5,
+    },
+    {
+      "money": 1800,
+      "ability_item1": 10,
+    },
+    {
+      "money": 6000,
+      "ability_item2": 10,
+    },
+    {
+      "money": 12000,
+      "ability_item2": 20,
+    },
+  ],
+  "equipment": [
+    // 装備
+    {
+      "money": 1500,
+    },
+    {
+      "money": 7000,
+    },
+    {
+      "money": 20000,
+    },
+  ],
+}
