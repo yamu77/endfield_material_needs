@@ -25,22 +25,26 @@
   <body>
     <main class="container">
       <h1>エンドフィールド必要素材数</h1>
+      <p>選択したオペレーターの必要素材を計算するよ</p>
 
       <section class="panel">
-        <h2>キャラクター選択</h2>
+        <h2>オペレーター選択</h2>
         <p id="loading">読み込み中...</p>
         <div id="character-list" class="character-list"></div>
       </section>
 
       <section class="panel">
-        <h2>詳細選択</h2>
-        <p id="details-empty-message">キャラクターを選択して。</p>
-        <div id="details-list" class="details-list"></div>
+        <details class="details-accordion">
+          <summary>詳細選択</summary>
+          <p>今の育成状況を踏まえた計算ができるよ</p>
+          <div class="details-accordion-content">
+            <div id="details-list" class="details-list"></div>
+          </div>
+        </details>
       </section>
 
       <section class="panel">
         <h2>素材合計</h2>
-        <p id="empty-message">キャラクターを選択して。</p>
         <div id="total-list" class="total-list"></div>
       </section>
     </main>

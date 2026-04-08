@@ -7,9 +7,27 @@ const detailsEmptyMessageEl = document.getElementById("details-empty-message");
 
 const ITEM_NAME_MAP_URL = "./trans.json";
 const ITEM_ORDER_URL = "./item-order.json";
+const EXPERIENCE_URL = "./experience.json";
 const CHARACTER_DIR_URL = "./character/";
 const ITEM_IMAGE_BASES = ["./img/material/", "./img/"];
 const MAX_COLUMNS_PER_TABLE = 5;
+const ADVANCED_OPERATION_RECORD_KEY = "advanced_operation_record";
+const ADVANCED_RECOGNITION_MEDIUM_KEY = "advanced_recognition_medium";
+const ADVANCED_OPERATION_RECORD_EXP = 10000;
+const ADVANCED_RECOGNITION_MEDIUM_EXP = 10000;
+const ADVANCED_OPERATION_RECORD_LEVEL_CAP = 60;
+
+function setHiddenIfPresent(element, hidden) {
+  if (element) {
+    element.hidden = hidden;
+  }
+}
+
+function setTextIfPresent(element, text) {
+  if (element) {
+    element.textContent = text;
+  }
+}
 
 function parseJsonc(text) {
   const withoutLineComments = text.replace(/(^|[^\\])\/\/.*$/gm, "$1");
@@ -68,6 +86,7 @@ function safeArray(value) {
 
 function buildDefaultProgress(characterData) {
   return {
+    level: 1,
     promotion: 0,
     skillProgress: [0, 0, 0, 0],
     assignments: 0,
@@ -126,6 +145,100 @@ function buildCharacterDataByProgress(characterData, progress) {
     specializations1,
     specializations2,
   };
+}
+
+function getMaxExperienceLevel(experienceTable) {
+  if (experienceTable.length === 0) {
+    return 1;
+  }
+  return experienceTable[experienceTable.length - 1].lv;
+}
+
+function getTotalExperienceAtLevel(experienceTable, level) {
+  const matched = experienceTable.find((entry) => entry.lv === level);
+  return matched ? matched.total : 0;
+}
+
+function getExperienceBetweenLevels(experienceTable, fromLevel, toLevel) {
+  if (experienceTable.length === 0) {
+    return 0;
+  }
+  const maxLevel = getMaxExperienceLevel(experienceTable);
+  const safeFrom = Math.max(1, Math.min(fromLevel, maxLevel));
+  const safeTo = Math.max(safeFrom, Math.min(toLevel, maxLevel));
+  return Math.max(
+    0,
+    getTotalExperienceAtLevel(experienceTable, safeTo) -
+      getTotalExperienceAtLevel(experienceTable, safeFrom)
+  );
+}
+
+function getRemainingExperienceMaterialCounts(experienceTable, currentLevel) {
+  if (experienceTable.length === 0) {
+    return {
+      [ADVANCED_OPERATION_RECORD_KEY]: 0,
+      [ADVANCED_RECOGNITION_MEDIUM_KEY]: 0,
+    };
+  }
+
+  const maxLevel = getMaxExperienceLevel(experienceTable);
+  const safeLevel = Math.max(1, Math.min(currentLevel, maxLevel));
+  const operationEndLevel = Math.min(ADVANCED_OPERATION_RECORD_LEVEL_CAP, maxLevel);
+  const operationExp = getExperienceBetweenLevels(experienceTable, safeLevel, operationEndLevel);
+  const recognitionExp =
+    maxLevel > ADVANCED_OPERATION_RECORD_LEVEL_CAP
+      ? getExperienceBetweenLevels(
+          experienceTable,
+          Math.max(safeLevel, ADVANCED_OPERATION_RECORD_LEVEL_CAP),
+          maxLevel
+        )
+      : 0;
+
+  return {
+    [ADVANCED_OPERATION_RECORD_KEY]: Math.ceil(operationExp / ADVANCED_OPERATION_RECORD_EXP),
+    [ADVANCED_RECOGNITION_MEDIUM_KEY]: Math.ceil(
+      recognitionExp / ADVANCED_RECOGNITION_MEDIUM_EXP
+    ),
+  };
+}
+
+function parseMoneyRange(rangeText) {
+  if (typeof rangeText !== "string") {
+    return null;
+  }
+  const matched = rangeText.match(/Lv\s*(\d+)\s*-\s*(\d+)/i);
+  if (!matched) {
+    return null;
+  }
+  const start = Number.parseInt(matched[1], 10);
+  const end = Number.parseInt(matched[2], 10);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start >= end) {
+    return null;
+  }
+  return { start, end };
+}
+
+function getRemainingLevelMoney(moneyRanges, currentLevel, maxLevel) {
+  if (!Array.isArray(moneyRanges) || moneyRanges.length === 0) {
+    return 0;
+  }
+  const safeLevel = Math.max(1, Math.min(currentLevel, maxLevel));
+  let total = 0;
+  moneyRanges.forEach((entry) => {
+    const parsedRange = parseMoneyRange(entry.range);
+    if (!parsedRange) {
+      return;
+    }
+    const amount = Number(entry.amount);
+    if (!Number.isFinite(amount) || amount < 0) {
+      return;
+    }
+    const overlapStart = Math.max(safeLevel, parsedRange.start);
+    const overlapEnd = Math.min(maxLevel, parsedRange.end);
+    const levels = Math.max(0, overlapEnd - overlapStart);
+    total += levels * amount;
+  });
+  return total;
 }
 
 async function getCharacterFileNames() {
@@ -199,14 +312,21 @@ async function loadCharacters() {
     }
   }
 
-  return characters;
+  return characters.sort((a, b) => a.displayName.localeCompare(b.displayName, "ja"));
 }
 
-function renderTotals(selectedCharacters, itemNameMap, itemOrder, progressByCharacter) {
+function renderTotals(
+  selectedCharacters,
+  itemNameMap,
+  itemOrder,
+  progressByCharacter,
+  experienceTable,
+  experienceMoneyRanges
+) {
   totalListEl.innerHTML = "";
 
   if (selectedCharacters.length === 0) {
-    emptyMessageEl.hidden = false;
+    setHiddenIfPresent(emptyMessageEl, false);
     return;
   }
 
@@ -217,6 +337,11 @@ function renderTotals(selectedCharacters, itemNameMap, itemOrder, progressByChar
       buildDefaultProgress(character.rawData);
     const filteredData = buildCharacterDataByProgress(character.rawData, progress);
     const items = aggregateCharacterItems(filteredData);
+    const levelItems = getRemainingExperienceMaterialCounts(experienceTable, progress.level);
+    const maxLevel = getMaxExperienceLevel(experienceTable);
+    items.money =
+      (items.money || 0) + getRemainingLevelMoney(experienceMoneyRanges, progress.level, maxLevel);
+    addNumericFields(items, levelItems);
     addNumericFields(totals, items);
   });
 
@@ -224,12 +349,12 @@ function renderTotals(selectedCharacters, itemNameMap, itemOrder, progressByChar
   const mergedKeys = Array.from(new Set([...knownKeys, ...Object.keys(totals)]));
   const keys = sortItemKeys(mergedKeys, itemOrder, itemNameMap);
   if (keys.length === 0) {
-    emptyMessageEl.textContent = "対象素材がない。";
-    emptyMessageEl.hidden = false;
+    setTextIfPresent(emptyMessageEl, "対象素材がない。");
+    setHiddenIfPresent(emptyMessageEl, false);
     return;
   }
 
-  emptyMessageEl.hidden = true;
+  setHiddenIfPresent(emptyMessageEl, true);
   renderTotalsTables(keys, totals, itemNameMap);
 }
 
@@ -318,7 +443,13 @@ function renderTotalsTables(keys, totals, itemNameMap) {
   }
 }
 
-function renderCharacterList(characters, itemNameMap, itemOrder) {
+function renderCharacterList(
+  characters,
+  itemNameMap,
+  itemOrder,
+  experienceTable,
+  experienceMoneyRanges
+) {
   characterListEl.innerHTML = "";
 
   if (characters.length === 0) {
@@ -337,8 +468,15 @@ function renderCharacterList(characters, itemNameMap, itemOrder) {
     const selectedCharacters = characters.filter((item) =>
       selected.has(item.fileName)
     );
-    renderDetailsControls(selectedCharacters, progressByCharacter, updateTotals);
-    renderTotals(selectedCharacters, itemNameMap, itemOrder, progressByCharacter);
+    renderDetailsControls(selectedCharacters, progressByCharacter, updateTotals, experienceTable);
+    renderTotals(
+      selectedCharacters,
+      itemNameMap,
+      itemOrder,
+      progressByCharacter,
+      experienceTable,
+      experienceMoneyRanges
+    );
   };
 
   characters.forEach((character, index) => {
@@ -358,11 +496,6 @@ function renderCharacterList(characters, itemNameMap, itemOrder) {
       updateTotals();
     });
 
-    if (index === 0) {
-      checkbox.checked = true;
-      selected.add(character.fileName);
-    }
-
     const text = document.createElement("span");
     text.textContent = character.displayName;
 
@@ -374,9 +507,9 @@ function renderCharacterList(characters, itemNameMap, itemOrder) {
   updateTotals();
 }
 
-function createStageSelect(currentValue, maxValue, optionLabelBuilder) {
+function createStageSelect(currentValue, minValue, maxValue, optionLabelBuilder) {
   const select = document.createElement("select");
-  for (let stage = 0; stage <= maxValue; stage += 1) {
+  for (let stage = minValue; stage <= maxValue; stage += 1) {
     const option = document.createElement("option");
     option.value = String(stage);
     option.textContent = optionLabelBuilder ? optionLabelBuilder(stage) : String(stage);
@@ -388,14 +521,21 @@ function createStageSelect(currentValue, maxValue, optionLabelBuilder) {
   return select;
 }
 
-function createDetailRow(labelText, currentValue, maxValue, onChange, optionLabelBuilder) {
+function createDetailRow(
+  labelText,
+  currentValue,
+  maxValue,
+  onChange,
+  optionLabelBuilder,
+  minValue = 0
+) {
   const row = document.createElement("div");
   row.className = "detail-row";
 
   const label = document.createElement("label");
   label.textContent = labelText;
 
-  const select = createStageSelect(currentValue, maxValue, optionLabelBuilder);
+  const select = createStageSelect(currentValue, minValue, maxValue, optionLabelBuilder);
   select.addEventListener("change", () => {
     onChange(Number(select.value));
   });
@@ -405,14 +545,45 @@ function createDetailRow(labelText, currentValue, maxValue, onChange, optionLabe
   return row;
 }
 
-function renderDetailsControls(selectedCharacters, progressByCharacter, onChange) {
+function createNumberInputRow(labelText, currentValue, minValue, maxValue, onChange) {
+  const row = document.createElement("div");
+  row.className = "detail-row";
+
+  const label = document.createElement("label");
+  label.textContent = labelText;
+
+  const input = document.createElement("input");
+  input.type = "number";
+  input.inputMode = "numeric";
+  input.min = String(minValue);
+  input.max = String(maxValue);
+  input.step = "1";
+  input.value = String(currentValue);
+
+  const commitValue = () => {
+    const parsed = Number.parseInt(input.value, 10);
+    const safeValue = Number.isFinite(parsed) ? parsed : minValue;
+    const clamped = Math.max(minValue, Math.min(safeValue, maxValue));
+    input.value = String(clamped);
+    onChange(clamped);
+  };
+
+  input.addEventListener("change", commitValue);
+  input.addEventListener("blur", commitValue);
+
+  row.appendChild(label);
+  row.appendChild(input);
+  return row;
+}
+
+function renderDetailsControls(selectedCharacters, progressByCharacter, onChange, experienceTable) {
   detailsListEl.innerHTML = "";
 
   if (selectedCharacters.length === 0) {
-    detailsEmptyMessageEl.hidden = false;
+    setHiddenIfPresent(detailsEmptyMessageEl, false);
     return;
   }
-  detailsEmptyMessageEl.hidden = true;
+  setHiddenIfPresent(detailsEmptyMessageEl, true);
 
   selectedCharacters.forEach((character) => {
     const source = character.rawData || {};
@@ -430,6 +601,20 @@ function renderDetailsControls(selectedCharacters, progressByCharacter, onChange
 
     const grid = document.createElement("div");
     grid.className = "detail-grid";
+
+    const maxLevel = getMaxExperienceLevel(experienceTable);
+    grid.appendChild(
+      createNumberInputRow(
+        "今のレベル",
+        progress.level || 1,
+        1,
+        maxLevel,
+        (value) => {
+          progress.level = value;
+          onChange();
+        }
+      )
+    );
 
     grid.appendChild(
       createDetailRow("昇進段階", progress.promotion, safeArray(source.promotion).length, (value) => {
@@ -534,13 +719,52 @@ async function loadItemOrder() {
   }
 }
 
+async function loadExperienceTable() {
+  try {
+    const response = await fetch(EXPERIENCE_URL);
+    if (!response.ok) {
+      return [];
+    }
+    const payload = await response.json();
+    const list = safeArray(payload.experience)
+      .filter(
+        (entry) =>
+          isPlainObject(entry) &&
+          typeof entry.lv === "number" &&
+          Number.isFinite(entry.lv) &&
+          typeof entry.total === "number" &&
+          Number.isFinite(entry.total)
+      )
+      .sort((a, b) => a.lv - b.lv);
+    const moneyRanges = safeArray(payload.money)
+      .filter(
+        (entry) =>
+          isPlainObject(entry) &&
+          typeof entry.range === "string" &&
+          typeof entry.amount === "number" &&
+          Number.isFinite(entry.amount)
+      )
+      .map((entry) => ({ range: entry.range, amount: entry.amount }));
+    return { table: list, moneyRanges };
+  } catch (_error) {
+    return { table: [], moneyRanges: [] };
+  }
+}
+
 async function main() {
-  const [itemNameMap, itemOrder, characters] = await Promise.all([
+  const [itemNameMap, itemOrder, experienceData, characters] = await Promise.all([
     loadItemNameMap(),
     loadItemOrder(),
+    loadExperienceTable(),
     loadCharacters(),
   ]);
-  renderCharacterList(characters, itemNameMap, itemOrder);
+  renderCharacterList(
+    characters,
+    itemNameMap,
+    itemOrder,
+    experienceData.table,
+    experienceData.moneyRanges
+  );
 }
 
 main();
