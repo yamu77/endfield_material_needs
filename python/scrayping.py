@@ -1,10 +1,12 @@
+"""Module providing a function printing python version."""
+
 import json
 import re
 import time
 import argparse
-from tqdm import tqdm
 from pathlib import Path
 from typing import Dict, Optional, List, Tuple
+from tqdm import tqdm
 import requests
 from bs4 import BeautifulSoup
 
@@ -13,11 +15,13 @@ class EndfieldScraper:
     """URLを固定して必要なデータをget_xxx形式で取得するスクレイパー。"""
 
     def __init__(self, url: str) -> None:
+        """スクレイプ対象URLを受け取り、キャッシュを初期化する。"""
         self.url = url
         self._soup: Optional[BeautifulSoup] = None
         self._jp_to_key_map: Optional[Dict[str, str]] = None
 
     def _fetch_soup(self, force_refresh: bool = False) -> BeautifulSoup:
+        """対象ページを取得し、BeautifulSoupをキャッシュ付きで返す。"""
         if self._soup is not None and not force_refresh:
             return self._soup
 
@@ -29,6 +33,7 @@ class EndfieldScraper:
         return self._soup
 
     def _get_jp_to_key_map(self) -> Dict[str, str]:
+        """`trans.json` を読み込み、日本語名→内部キーの辞書を返す。"""
         if self._jp_to_key_map is not None:
             return self._jp_to_key_map
         trans_path = Path(__file__).resolve().parent.parent / "trans.json"
@@ -38,11 +43,13 @@ class EndfieldScraper:
         return self._jp_to_key_map
 
     def get_name(self) -> str:
+        """ページ内のキャラクター名を抽出して返す。"""
         soup = self._fetch_soup()
         name_el = soup.select_one("#content_1_0+.ie5 tr:nth-child(2) td:last-child")
         return name_el.text.strip() if name_el else "名前が見つからないよ"
 
     def get_promotion(self) -> List[Dict[str, int]]:
+        """昇進素材を抽出する（現状未使用だが将来利用のため保持）。"""
         soup = self._fetch_soup()
         # item keys in correct json order
         keys = [
@@ -80,6 +87,7 @@ class EndfieldScraper:
         return result
 
     def get_qualities(self) -> List[List[Dict[str, int]]]:
+        """素質素材を抽出する（現状未使用だが将来利用のため保持）。"""
         soup = self._fetch_soup()
         result: List[List[Dict[str, int]]] = [[], []]
         for offset in range(2, 4):
@@ -125,6 +133,7 @@ class EndfieldScraper:
         return result
 
     def get_assignments(self) -> List[Dict[str, int]]:
+        """配属スキル素材を抽出する（現状未使用だが将来利用のため保持）。"""
         soup = self._fetch_soup()
         fields_order = [
             ("money", "contract_prism"),
@@ -159,6 +168,7 @@ class EndfieldScraper:
         return assignments
 
     def get_skills(self) -> List[Dict[str, int]]:
+        """通常スキルの育成素材を抽出する。"""
         skill_order = [
             ("money", "contract_prism", "crystal_sharp_leaf"),
             ("money", "contract_prism", "crystal_sharp_leaf"),
@@ -207,6 +217,7 @@ class EndfieldScraper:
         return result
 
     def _parse_specialization_table(self, table) -> List[Dict[str, int]]:
+        """特化テーブル1つを解析し、段階ごとの素材辞書配列に変換する。"""
         jp_to_key = self._get_jp_to_key_map()
         result: List[Dict[str, int]] = []
         materials = table.select("tr:nth-child(2) > td img")
@@ -237,6 +248,7 @@ class EndfieldScraper:
         return result
 
     def get_specializations(self) -> Tuple[List[Dict[str, int]], List[Dict[str, int]]]:
+        """特化1/特化2の素材テーブルを抽出して返す。"""
         soup = self._fetch_soup()
         specializations1: List[Dict[str, int]] = []
         specializations2: List[Dict[str, int]] = []
@@ -260,7 +272,9 @@ class EndfieldScraper:
                 break
         return specializations1, specializations2
 
+    # 能力値強化：現状不要だが残す(違う箇所を拾いに行ってる疑いがある)
     def get_abilities(self) -> List[Dict[str, int]]:
+        """能力値強化素材を抽出する（現状未使用だが将来利用のため保持）。"""
         soup = self._fetch_soup()
         rows = soup.select("#content_1_14+.ie5 tr:nth-child(n+2)")
         item_keys = [
@@ -284,6 +298,7 @@ class EndfieldScraper:
         return abilities
 
     def get_equipment(self) -> List[Dict[str, int]]:
+        """装備適正素材を抽出する（現状未使用だが将来利用のため保持）。"""
         soup = self._fetch_soup()
         jp_to_key = self._get_jp_to_key_map()
         equipment: List[Dict[str, int]] = []
@@ -319,6 +334,7 @@ class EndfieldScraper:
         return equipment
 
     def get_file_name(self) -> str:
+        """ページ下部の英語名から保存用ファイル名を取得する。"""
         soup = self._fetch_soup()
         for i in range(20):  # 適当な最大回数（必要に応じて増やせる）
             selector = f"#content_1_{30 + i}+p"
@@ -333,20 +349,51 @@ class EndfieldScraper:
         return ""
 
     def get_data(self) -> Dict[str, object]:
+        """出力JSON形式のキャラクターデータを組み立てて返す。"""
         specializations1, specializations2 = self.get_specializations()
         return {
             "name": self.get_name(),
-            "promotion": self.get_promotion(),
-            "assignments": self.get_assignments(),
-            "qualities": self.get_qualities(),
+            "promotion": [
+                {"money": 1600, "contract_disc": 8, "rose_mushroom_t1": 3},
+                {"money": 6500, "contract_disc": 25, "rose_mushroom_t2": 5},
+                {"money": 18000, "contract_disc_set": 24, "rose_mushroom_t3": 5},
+                {
+                    "money": 100000,
+                    "contract_disc_set": 36,
+                    "bloodtide_mushroom": 8,
+                    "ultra_range_spectro_tube": 20,
+                },
+            ],
+            "assignments": [
+                {"money": 1600, "contract_prism": 6},
+                {"money": 8000, "contract_prism_set": 12},
+                {"money": 3000, "contract_prism": 12},
+                {"money": 20000, "contract_prism_set": 20},
+            ],
+            "qualities": [
+                [
+                    {"money": 2400, "contract_prism": 12},
+                    {"money": 8600, "contract_prism": 40},
+                ],
+                [
+                    {"money": 10000, "contract_prism": 48},
+                    {"money": 24000, "contract_prism": 28},
+                ],
+            ],
             "skills": self.get_skills(),
             "specializations1": specializations1,
             "specializations2": specializations2,
-            "abilities": self.get_abilities(),
-            "equipment": self.get_equipment(),
+            "abilities": [
+                {"money": 1000, "contract_prism": 5},
+                {"money": 1800, "contract_prism": 10},
+                {"money": 6000, "contract_prism_set": 10},
+                {"money": 12000, "contract_prism_set": 20},
+            ],
+            "equipment": [{"money": 1600}, {"money": 6500}, {"money": 18000}],
         }
 
     def save_json(self) -> None:
+        """抽出データを `character/<英語名>.json` に保存する。"""
         try:
             file_name = "test.json"
             result_data = self.get_data()
@@ -361,6 +408,7 @@ class EndfieldScraper:
 
 
 def run_all_mode():
+    """一覧ページから全キャラURLを収集し、順番にJSON保存する。"""
 
     BASE_URL = "https://arknights-endfield.wikiru.jp"
     url = f"{BASE_URL}/?%E3%82%AA%E3%83%9A%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC%E4%B8%80%E8%A6%A7/%E8%81%B7%E6%A5%AD%E5%88%A5"
@@ -393,6 +441,7 @@ def run_all_mode():
 
 
 def main() -> None:
+    """CLI引数を解釈して単体処理または全件処理を実行する。"""
     parser = argparse.ArgumentParser(description="EndfieldScraper CLI")
     parser.add_argument(
         "url", nargs="?", type=str, help="スクレイピングしたいページURL"
