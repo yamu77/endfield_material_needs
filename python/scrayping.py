@@ -104,21 +104,29 @@ class EndfieldScraper:
             ("money", "contract_prism_set"),
         ]
         assignments: List[Dict[str, int]] = []
-        for i, (money_key, item_key) in enumerate(fields_order):
-            row_index = i + 1
-            money_val = 0
-            item_val = 0
-            item_cell = soup.select_one(
-                f"#content_1_16+.ie5 tr:nth-child({row_index+1}) td:nth-child(3)"
+        for i in range(4):
+            assignments = []
+            for j, (money_key, item_key) in enumerate(fields_order):
+                row_index = j + 1
+                money_val = 0
+                item_val = 0
+                item_cell = soup.select_one(
+                    f"#content_1_{13+i}+.ie5 tr:nth-child({row_index+1}) td:nth-child(3)"
+                )
+                if item_cell:
+                    item_text = item_cell.get_text(strip=True).replace(",", "")
+                    matches = re.findall(r"x(\d+)", item_text)
+                    if len(matches) > 0:
+                        item_val = int(matches[0])
+                    if len(matches) > 1:
+                        money_val = int(matches[1])
+                assignments.append({money_key: money_val, item_key: item_val})
+            has_zero = any(
+                row.get(money_key, 0) == 0 or row.get(item_key, 0) == 0
+                for row, (money_key, item_key) in zip(assignments, fields_order)
             )
-            if item_cell:
-                item_text = item_cell.get_text(strip=True).replace(",", "")
-                matches = re.findall(r"x(\d+)", item_text)
-                if len(matches) > 0:
-                    item_val = int(matches[0])
-                if len(matches) > 1:
-                    money_val = int(matches[1])
-            assignments.append({money_key: money_val, item_key: item_val})
+            if not has_zero:
+                break
         return assignments
 
     def get_skills(self) -> List[Dict[str, int]]:
@@ -286,7 +294,7 @@ class EndfieldScraper:
 
     def save_json(self) -> None:
         try:
-            filename: str = "character_data.json"
+            file_name = "test.json"
             result_data = self.get_data()
             name = self.get_file_name()
             if not name:
