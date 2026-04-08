@@ -92,10 +92,10 @@
     { "lv": 90, "next": "MAX", "total": 1792290 }
   ],
   "money": [
-    { "range": "Lv1-20", "amount": 820 },
-    { "range": "Lv20-40", "amount": 12540 },
-    { "range": "Lv40-60", "amount": 23900 },
-    { "range": "Lv60-80", "amount": 109180 },
-    { "range": "Lv80-90", "amount": 238980 }
+    { "range": "Lv1-20", "amount": 820, "divideBy": 19 },
+    { "range": "Lv20-40", "amount": 12540, "divideBy": 20 },
+    { "range": "Lv40-60", "amount": 23900, "divideBy": 20 },
+    { "range": "Lv60-80", "amount": 109180, "divideBy": 20 },
+    { "range": "Lv80-90", "amount": 238980, "divideBy": 10 }
   ]
 }

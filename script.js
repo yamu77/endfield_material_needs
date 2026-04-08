@@ -256,12 +256,20 @@ function getRemainingLevelMoney(moneyRanges, currentLevel, maxLevel) {
     if (!Number.isFinite(amount) || amount < 0) {
       return;
     }
+    const defaultDivisor = parsedRange.end - parsedRange.start;
+    const divisor =
+      Number.isFinite(entry.divideBy) && entry.divideBy > 0
+        ? entry.divideBy
+        : defaultDivisor;
+    if (!Number.isFinite(divisor) || divisor <= 0) {
+      return;
+    }
     const overlapStart = Math.max(safeLevel, parsedRange.start);
     const overlapEnd = Math.min(maxLevel, parsedRange.end);
     const levels = Math.max(0, overlapEnd - overlapStart);
-    total += levels * amount;
+    total += (levels * amount) / divisor;
   });
-  return total;
+  return Math.round(total);
 }
 
 async function getCharacterFileNames() {
@@ -849,9 +857,16 @@ async function loadExperienceTable() {
           isPlainObject(entry) &&
           typeof entry.range === "string" &&
           typeof entry.amount === "number" &&
-          Number.isFinite(entry.amount),
+          Number.isFinite(entry.amount) &&
+          (entry.divideBy === undefined ||
+            (typeof entry.divideBy === "number" &&
+              Number.isFinite(entry.divideBy))),
       )
-      .map((entry) => ({ range: entry.range, amount: entry.amount }));
+      .map((entry) => ({
+        range: entry.range,
+        amount: entry.amount,
+        divideBy: entry.divideBy,
+      }));
     return { table: list, moneyRanges };
   } catch (_error) {
     return { table: [], moneyRanges: [] };
