@@ -44,15 +44,20 @@
   "qualities": [
     [
       {
-        "money": 0,
-        "contract_prism": 0
+        "money": 2400,
+        "contract_prism": 12
       },
       {
-        "money": 0,
-        "contract_prism": 0
+        "money": 10800,
+        "contract_prism": 48
       }
     ],
-    []
+    [
+      {
+        "money": 32000,
+        "contract_prism": 36
+      }
+    ]
   ],
   "skills": [
     {

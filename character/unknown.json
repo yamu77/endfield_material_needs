@@ -1,5 +1,5 @@
 {
-  "name": "ザイヒ",
+  "name": "管理人",
   "promotion": [
     {
       "money": 1600,
@@ -20,25 +20,25 @@
       "money": 100000,
       "contract_disc_set": 36,
       "bloodtide_mushroom": 8,
-      "ultra_range_spectro_tube": 96
+      "ultra_range_spectro_tube": 20
     }
   ],
   "assignments": [
     {
-      "money": 1600,
-      "contract_prism": 6
+      "money": 0,
+      "contract_prism": 0
     },
     {
-      "money": 8000,
-      "contract_prism_set": 12
+      "money": 0,
+      "contract_prism_set": 0
     },
     {
-      "money": 3000,
-      "contract_prism": 12
+      "money": 0,
+      "contract_prism": 0
     },
     {
-      "money": 20000,
-      "contract_prism_set": 20
+      "money": 0,
+      "contract_prism_set": 0
     }
   ],
   "qualities": [
@@ -48,14 +48,18 @@
         "contract_prism": 12
       },
       {
-        "money": 10800,
-        "contract_prism": 48
+        "money": 8600,
+        "contract_prism": 40
       }
     ],
     [
       {
-        "money": 32000,
-        "contract_prism": 36
+        "money": 10000,
+        "contract_prism": 48
+      },
+      {
+        "money": 24000,
+        "contract_prism": 28
       }
     ]
   ],
@@ -105,22 +109,22 @@
     {
       "trace_of_continuance": 1,
       "contract_prism_set": 15,
-      "tachyon_selected_lattice": 6,
-      "erosion_jade_leaf": 3,
+      "d96_steel_sample_iv": 6,
+      "rock_angelos_leaf": 3,
       "money": 24000
     },
     {
       "trace_of_continuance": 2,
       "contract_prism_set": 24,
-      "tachyon_selected_lattice": 16,
-      "erosion_jade_leaf": 6,
+      "d96_steel_sample_iv": 16,
+      "rock_angelos_leaf": 6,
       "money": 30000
     },
     {
       "trace_of_continuance": 3,
       "contract_prism_set": 50,
-      "tachyon_selected_lattice": 36,
-      "erosion_jade_leaf": 12,
+      "d96_steel_sample_iv": 36,
+      "rock_angelos_leaf": 12,
       "money": 65000
     }
   ],
@@ -128,41 +132,37 @@
     {
       "trace_of_continuance": 1,
       "contract_prism_set": 15,
-      "quadrant_adaptive_fluid": 6,
-      "erosion_jade_leaf": 3,
+      "tachyon_selected_lattice": 6,
+      "rock_angelos_leaf": 3,
       "money": 24000
     },
     {
       "trace_of_continuance": 2,
       "contract_prism_set": 24,
-      "quadrant_adaptive_fluid": 16,
-      "erosion_jade_leaf": 6,
+      "tachyon_selected_lattice": 16,
+      "rock_angelos_leaf": 6,
       "money": 30000
     },
     {
       "trace_of_continuance": 3,
       "contract_prism_set": 50,
-      "quadrant_adaptive_fluid": 36,
-      "erosion_jade_leaf": 12,
+      "tachyon_selected_lattice": 36,
+      "rock_angelos_leaf": 12,
       "money": 65000
     }
   ],
   "abilities": [
     {
-      "money": 1600,
-      "contract_prism": 6
+      "money": 0,
+      "contract_prism": 0
     },
     {
-      "money": 8000,
-      "contract_prism": 12
+      "money": 0,
+      "contract_prism": 0
     },
     {
-      "money": 3000,
-      "contract_prism_set": 12
-    },
-    {
-      "money": 20000,
-      "contract_prism_set": 20
+      "money": 0,
+      "contract_prism_set": 0
     }
   ],
   "equipment": [
