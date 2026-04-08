@@ -82,17 +82,46 @@ class EndfieldScraper:
     def get_qualities(self) -> List[List[Dict[str, int]]]:
         soup = self._fetch_soup()
         result: List[List[Dict[str, int]]] = [[], []]
-        for group in range(2):
-            selector = f"#content_1_{3+group}+.ie5 tr"
-            rows = soup.select(selector)
-            for row in rows[1:3]:  # tr:nth-child(2)と(3)→Pythonの0-indexなので1と2
-                row_text = row.get_text(" ", strip=True)
-                matches = re.findall(r"x(\d+)", row_text)
-                entry = {
-                    "money": int(matches[1]) if len(matches) > 1 else 0,
-                    "contract_prism": int(matches[0]) if len(matches) > 0 else 0,
-                }
-                result[group].append(entry)
+        for offset in range(2, 4):
+            current_result: List[List[Dict[str, int]]] = [[], []]
+            rows = soup.select(f"#content_1_{offset}+.ie5 tr")
+            if len(rows) >= 4:
+                for idx, row in enumerate(rows[1:5]):
+                    row_text = row.get_text(" ", strip=True).replace(",", "")
+                    matches = re.findall(r"x(\d+)", row_text)
+                    if len(matches) < 2:
+                        continue
+                    group = 0 if idx < 2 else 1
+                    current_result[group].append(
+                        {
+                            "money": int(matches[1]),
+                            "contract_prism": int(matches[0]),
+                        }
+                    )
+            else:
+                for group in range(2):
+                    selector = f"#content_1_{offset + group}+.ie5 tr"
+                    rows = soup.select(selector)
+                    for row in rows[
+                        1:3
+                    ]:  # tr:nth-child(2)と(3)→Pythonの0-indexなので1と2
+                        row_text = row.get_text(" ", strip=True)
+                        matches = re.findall(r"x(\d+)", row_text)
+                        entry = {
+                            "money": int(matches[1]) if len(matches) > 1 else 0,
+                            "contract_prism": (
+                                int(matches[0]) if len(matches) > 0 else 0
+                            ),
+                        }
+                        current_result[group].append(entry)
+            result = current_result
+            merged_rows = current_result[0] + current_result[1]
+            has_zero = any(
+                any(value == 0 for value in row.values()) for row in merged_rows
+            )
+            has_empty_group = any(len(group_data) == 0 for group_data in current_result)
+            if len(merged_rows) > 0 and not has_zero and not has_empty_group:
+                return current_result
         return result
 
     def get_assignments(self) -> List[Dict[str, int]]:
@@ -221,7 +250,9 @@ class EndfieldScraper:
                 current_specializations2 = self._parse_specialization_table(tables[1])
 
             merged_rows = current_specializations1 + current_specializations2
-            has_zero = any(any(value == 0 for value in row.values()) for row in merged_rows)
+            has_zero = any(
+                any(value == 0 for value in row.values()) for row in merged_rows
+            )
             has_less_than_five_fields = any(len(row) < 5 for row in merged_rows)
             specializations1 = current_specializations1
             specializations2 = current_specializations2
