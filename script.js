@@ -12,7 +12,7 @@ const EXPERIENCE_URL = "./experience.json";
 const CHARACTER_DIR_URL = "./character/";
 const ITEM_IMAGE_BASES = ["./img/material/", "./img/"];
 const MAX_COLUMNS_PER_TABLE = 5;
-const MAX_COLUMNS_PER_TABLE_SP = 4;
+const MAX_COLUMNS_PER_TABLE_SP = 3;
 const ADVANCED_OPERATION_RECORD_KEY = "advanced_operation_record";
 const ADVANCED_RECOGNITION_MEDIUM_KEY = "advanced_recognition_medium";
 const ADVANCED_OPERATION_RECORD_EXP = 10000;
@@ -435,10 +435,22 @@ function createImageElement(itemKey, label) {
 
 function renderTotalsTables(keys, totals, itemNameMap) {
   if (totalListPcEl) {
-    renderTotalsTablesTo(totalListPcEl, keys, totals, itemNameMap, MAX_COLUMNS_PER_TABLE);
+    renderTotalsTablesTo(
+      totalListPcEl,
+      keys,
+      totals,
+      itemNameMap,
+      MAX_COLUMNS_PER_TABLE,
+    );
   }
   if (totalListSpEl) {
-    renderTotalsTablesTo(totalListSpEl, keys, totals, itemNameMap, MAX_COLUMNS_PER_TABLE_SP);
+    renderTotalsTablesTo(
+      totalListSpEl,
+      keys,
+      totals,
+      itemNameMap,
+      MAX_COLUMNS_PER_TABLE_SP,
+    );
   }
 }
 
