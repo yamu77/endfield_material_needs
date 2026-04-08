@@ -25,20 +25,20 @@
   ],
   "assignments": [
     {
-      "money": 0,
-      "contract_prism": 0
+      "money": 1600,
+      "contract_prism": 6
     },
     {
-      "money": 0,
-      "contract_prism_set": 0
+      "money": 8000,
+      "contract_prism_set": 12
     },
     {
-      "money": 0,
-      "contract_prism": 0
+      "money": 3000,
+      "contract_prism": 12
     },
     {
-      "money": 0,
-      "contract_prism_set": 0
+      "money": 20000,
+      "contract_prism_set": 20
     }
   ],
   "qualities": [
@@ -54,9 +54,94 @@
     ],
     []
   ],
-  "skills": [],
-  "specializations1": [],
-  "specializations2": [],
+  "skills": [
+    {
+      "money": 1000,
+      "contract_prism": 6,
+      "crystal_sharp_leaf": 1
+    },
+    {
+      "money": 2700,
+      "contract_prism": 12,
+      "crystal_sharp_leaf": 2
+    },
+    {
+      "money": 3200,
+      "contract_prism": 16,
+      "pure_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 4200,
+      "contract_prism": 21,
+      "pure_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 5400,
+      "contract_prism": 27,
+      "pure_crystal_sharp_leaf": 2
+    },
+    {
+      "money": 8200,
+      "contract_prism_set": 6,
+      "supreme_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 10500,
+      "contract_prism_set": 8,
+      "supreme_crystal_sharp_leaf": 1
+    },
+    {
+      "money": 18000,
+      "contract_prism_set": 16,
+      "supreme_crystal_sharp_leaf": 2
+    }
+  ],
+  "specializations1": [
+    {
+      "trace_of_continuance": 1,
+      "contract_prism_set": 15,
+      "ultra_range_spectro_tube": 6,
+      "erosion_jade_leaf": 3,
+      "money": 24000
+    },
+    {
+      "trace_of_continuance": 2,
+      "contract_prism_set": 24,
+      "ultra_range_spectro_tube": 16,
+      "erosion_jade_leaf": 6,
+      "money": 30000
+    },
+    {
+      "trace_of_continuance": 3,
+      "contract_prism_set": 50,
+      "ultra_range_spectro_tube": 36,
+      "erosion_jade_leaf": 12,
+      "money": 65000
+    }
+  ],
+  "specializations2": [
+    {
+      "trace_of_continuance": 1,
+      "contract_prism_set": 15,
+      "d96_steel_sample_iv": 6,
+      "erosion_jade_leaf": 3,
+      "money": 24000
+    },
+    {
+      "trace_of_continuance": 2,
+      "contract_prism_set": 24,
+      "d96_steel_sample_iv": 16,
+      "erosion_jade_leaf": 6,
+      "money": 30000
+    },
+    {
+      "trace_of_continuance": 3,
+      "contract_prism_set": 50,
+      "d96_steel_sample_iv": 36,
+      "erosion_jade_leaf": 12,
+      "money": 65000
+    }
+  ],
   "abilities": [
     {
       "money": 1600,
@@ -75,5 +160,15 @@
       "contract_prism_set": 20
     }
   ],
-  "equipment": []
+  "equipment": [
+    {
+      "money": 1600
+    },
+    {
+      "money": 6500
+    },
+    {
+      "money": 18000
+    }
+  ]
 }
