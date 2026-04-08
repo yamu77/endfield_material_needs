@@ -143,31 +143,36 @@ class EndfieldScraper:
         soup = self._fetch_soup()
         result: List[Dict[str, int]] = []
         order_index = 0
-        tables = soup.select("#content_1_12+div .ie5:nth-child(1)")
-        for table in tables:
-            rows = table.select("tr")
-            for row in rows:
-                header_cell = row.select_one("th")
-                if header_cell and header_cell.get_text(strip=True) == "-":
-                    break
-                row_text = row.get_text(" ", strip=True).replace(",", "")
-                matches = re.findall(r"x(\d+)", row_text)
-                if not matches:
-                    continue
-                keys = skill_order[order_index]
-                entry: Dict[str, int] = {
-                    keys[0]: (
-                        int(matches[2]) if len(matches) > 2 else 0
-                    ),  # money <- 3番目
-                    keys[1]: (
-                        int(matches[0]) if len(matches) > 0 else 0
-                    ),  # prism <- 1番目
-                    keys[2]: (
-                        int(matches[1]) if len(matches) > 1 else 0
-                    ),  # leaf <- 2番目
-                }
-                result.append(entry)
-                order_index += 1
+        for offset in range(10, 13):
+            tables = soup.select(f"#content_1_{offset}+div .ie5:nth-child(1)")
+            for table in tables:
+                rows = table.select("tr")
+                for row in rows:
+                    header_cell = row.select_one("th")
+                    if header_cell and header_cell.get_text(strip=True) == "-":
+                        break
+                    row_text = row.get_text(" ", strip=True).replace(",", "")
+                    matches = re.findall(r"x(\d+)", row_text)
+                    if not matches:
+                        continue
+                    if order_index >= len(skill_order):
+                        break
+                    keys = skill_order[order_index]
+                    entry: Dict[str, int] = {
+                        keys[0]: (
+                            int(matches[2]) if len(matches) > 2 else 0
+                        ),  # money <- 3番目
+                        keys[1]: (
+                            int(matches[0]) if len(matches) > 0 else 0
+                        ),  # prism <- 1番目
+                        keys[2]: (
+                            int(matches[1]) if len(matches) > 1 else 0
+                        ),  # leaf <- 2番目
+                    }
+                    result.append(entry)
+                    order_index += 1
+                if result and any(val == 0 for val in result[-1].values()):
+                    return result
             if order_index >= len(skill_order):
                 break
         return result
@@ -204,14 +209,24 @@ class EndfieldScraper:
 
     def get_specializations(self) -> Tuple[List[Dict[str, int]], List[Dict[str, int]]]:
         soup = self._fetch_soup()
-        tables = soup.select("#content_1_13+div .ie5")
         specializations1: List[Dict[str, int]] = []
         specializations2: List[Dict[str, int]] = []
+        for offset in range(11, 14):
+            tables = soup.select(f"#content_1_{offset}+div .ie5")
+            current_specializations1: List[Dict[str, int]] = []
+            current_specializations2: List[Dict[str, int]] = []
+            if len(tables) > 0:
+                current_specializations1 = self._parse_specialization_table(tables[0])
+            if len(tables) > 1:
+                current_specializations2 = self._parse_specialization_table(tables[1])
 
-        if len(tables) > 0:
-            specializations1 = self._parse_specialization_table(tables[0])
-        if len(tables) > 1:
-            specializations2 = self._parse_specialization_table(tables[1])
+            merged_rows = current_specializations1 + current_specializations2
+            has_zero = any(any(value == 0 for value in row.values()) for row in merged_rows)
+            has_less_than_five_fields = any(len(row) < 5 for row in merged_rows)
+            specializations1 = current_specializations1
+            specializations2 = current_specializations2
+            if not has_zero and not has_less_than_five_fields and len(merged_rows) > 0:
+                break
         return specializations1, specializations2
 
     def get_abilities(self) -> List[Dict[str, int]]:
