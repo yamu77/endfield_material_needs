@@ -182,7 +182,7 @@ class EndfieldScraper:
         soup = self._fetch_soup()
         result: List[Dict[str, int]] = []
         order_index = 0
-        for offset in range(10, 13):
+        for offset in range(10, 14):
             tables = soup.select(f"#content_1_{offset}+div .ie5:nth-child(1)")
             for table in tables:
                 rows = table.select("tr")
@@ -252,7 +252,7 @@ class EndfieldScraper:
         soup = self._fetch_soup()
         specializations1: List[Dict[str, int]] = []
         specializations2: List[Dict[str, int]] = []
-        for offset in range(11, 14):
+        for offset in range(11, 15):
             tables = soup.select(f"#content_1_{offset}+div .ie5")
             current_specializations1: List[Dict[str, int]] = []
             current_specializations2: List[Dict[str, int]] = []
@@ -262,13 +262,10 @@ class EndfieldScraper:
                 current_specializations2 = self._parse_specialization_table(tables[1])
 
             merged_rows = current_specializations1 + current_specializations2
-            has_zero = any(
-                any(value == 0 for value in row.values()) for row in merged_rows
-            )
-            has_less_than_five_fields = any(len(row) < 5 for row in merged_rows)
-            specializations1 = current_specializations1
-            specializations2 = current_specializations2
-            if not has_zero and not has_less_than_five_fields and len(merged_rows) > 0:
+            has_exactly_five_fields = all(len(row) == 5 for row in merged_rows)
+            if len(merged_rows) > 0 and has_exactly_five_fields:
+                specializations1 = current_specializations1
+                specializations2 = current_specializations2
                 break
         return specializations1, specializations2
 
